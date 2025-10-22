@@ -1,0 +1,22 @@
+# Product Price Tracker Requirements
+
+# Web Scraping
+beautifulsoup4==4.12.3
+requests==2.31.0
+lxml==5.3.0
+
+# Optional: Selenium for dynamic pages
+# selenium==4.15.2
+
+# Data Processing
+pandas==2.2.3
+numpy==1.26.4
+
+# Database
+SQLAlchemy==2.0.35
+
+# Airflow (Optional - for production scheduling)
+# apache-airflow==2.10.3
+
+# Utilities
+python-dateutil==2.9.0
