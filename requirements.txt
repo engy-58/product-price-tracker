@@ -15,8 +15,8 @@ numpy==1.26.4
 # Database
 SQLAlchemy==2.0.35
 
-# Airflow (Optional - for production scheduling)
-# apache-airflow==2.10.3
+# Airflow (for automated scheduling)
+apache-airflow==2.10.3
 
 # Utilities
 python-dateutil==2.9.0

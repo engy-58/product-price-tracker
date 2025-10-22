@@ -1,6 +1,7 @@
 """
 Product Price Tracker Pipeline DAG
-Airflow DAG for daily product price scraping
+Airflow DAG for daily book price scraping from books.toscrape.com
+Runs daily at 9:00 AM to track price changes over time
 """
 
 from datetime import datetime, timedelta
@@ -30,20 +31,22 @@ default_args = {
 
 
 def scrape_products(**context):
-    """Task 1: Scrape product prices"""
-    print("Starting product scraping...")
+    """Task 1: Scrape product prices from books.toscrape.com"""
+    print("Starting product scraping from books.toscrape.com...")
     
-    scraper = ProductScraper()
+    scraper = ProductScraper(region='egypt')
     
-    # Use demo products for testing
-    # In production, replace with actual scraping
-    products = scraper.scrape_demo_products()
+    # Scrape real books data
+    products = scraper.scrape_books(max_pages=2)  # Scrape 2 pages (~40 books)
+    
+    if not products:
+        raise ValueError("No products scraped! Check the website or scraper.")
     
     # Save raw data
     filepath = scraper.save_raw_data(products)
     
-    print(f"Scraped {len(products)} products")
-    print(f"Raw data saved to: {filepath}")
+    print(f"✓ Scraped {len(products)} books from books.toscrape.com")
+    print(f"✓ Raw data saved to: {filepath}")
     
     # Push data to XCom for next task
     context['ti'].xcom_push(key='products', value=products)
@@ -122,8 +125,8 @@ def generate_report(**context):
             direction = "📈" if item['change'] > 0 else "📉"
             print(f"{direction} {item['name'][:50]}")
             print(f"   ASIN: {item['asin']}")
-            print(f"   Price: ${item['first_price']:.2f} → ${item['last_price']:.2f}")
-            print(f"   Change: ${item['change']:+.2f} ({item['change_pct']:+.1f}%)")
+            print(f"   Price: £{item['first_price']:.2f} → £{item['last_price']:.2f}")
+            print(f"   Change: £{item['change']:+.2f} ({item['change_pct']:+.1f}%)")
             print()
     else:
         print("No significant price changes detected")

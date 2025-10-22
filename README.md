@@ -2,11 +2,11 @@
 
 A Python web scraping project that tracks product prices from **books.toscrape.com** over time. This site explicitly allows scraping for learning purposes - perfect for demonstrating real web scraping skills!
 
-## What Does It Do? 
+## What Does It Do?
 
 This project scrapes **real product information** from books.toscrape.com (a scraping-friendly practice website), cleans the data, stores it in a database, and shows you how prices change over time. It demonstrates a complete data pipeline with actual web scraping!
 
-## Features 
+## Features
 
 - **Real Web Scraping**: Actually scrapes live data from books.toscrape.com
 - **Data Cleaning**: Organizes messy HTML data into clean structured format
@@ -14,21 +14,52 @@ This project scrapes **real product information** from books.toscrape.com (a scr
 - **Reports**: Shows you which products went up or down in price
 - **Legal & Ethical**: Uses a site specifically designed for scraping practice
 
-## How to Run It 
+## How to Run It 🚀
 
-### 1. Install Dependencies
+### Option 1: Simple Runner (Recommended for Testing)
 
 ```bash
+# Install dependencies
 pip install -r requirements.txt
-```
 
-### 2. Run the Pipeline
-
-```bash
+# Run the pipeline once
 python run_pipeline.py
 ```
 
-That's it! The script will:
+### Option 2: Automated Scheduling with Airflow
+
+For automated daily runs:
+
+```bash
+# Install dependencies (includes Airflow)
+pip install -r requirements.txt
+
+# Initialize Airflow database
+airflow db init
+
+# Create an admin user
+airflow users create \
+    --username admin \
+    --firstname Admin \
+    --lastname User \
+    --role Admin \
+    --email admin@example.com
+
+# Start Airflow webserver (in one terminal)
+airflow webserver --port 8080
+
+# Start Airflow scheduler (in another terminal)
+airflow scheduler
+```
+
+Then:
+
+1. Open http://localhost:8080 in your browser
+2. Login with your admin credentials
+3. Enable the `product_price_tracker` DAG
+4. The pipeline will run daily at 9:00 AM automatically!
+
+### What the Pipeline Does:
 
 1. **Scrape real products** from books.toscrape.com (20 books per run)
 2. Clean and organize the data
@@ -37,7 +68,7 @@ That's it! The script will:
 
 > **Note**: Uses books.toscrape.com, a website specifically created for practicing web scraping legally!
 
-## What I Learned 
+## What I Learned
 
 - **Real web scraping** using BeautifulSoup and requests
 - Working with **pandas** for data cleaning
@@ -58,7 +89,7 @@ product-price-tracker/
 └── run_pipeline.py    # Main script to run everything
 ```
 
-## Example Output 
+## Example Output
 
 ```
 ✓ Successfully scraped 20 products from Books ToScrape
@@ -82,7 +113,18 @@ product-price-tracker/
 - **Pandas** - For cleaning and organizing data
 - **SQLAlchemy** - For database operations
 - **SQLite** - Simple database to store products
-- **Apache Airflow** - (Optional) For automating daily runs
+- **Apache Airflow 2.10** - For automating daily runs and workflow orchestration
+
+## Notes 📝
+
+- ✅ **Scrapes real data** from books.toscrape.com (a site designed for scraping practice)
+- ✅ **Legal and ethical** - the website explicitly allows scraping
+- ✅ Demonstrates complete web scraping workflow
+- ✅ **Two execution modes**: Simple runner OR Airflow automation
+- ✅ Database grows over time to show historical price trends
+- 🔄 **Airflow DAG** runs daily at 9:00 AM (configurable)
+- ✅ Can be adapted for other scraping-friendly sites
+- Perfect for portfolios and learning projects!
 
 ## Future Improvements 💡
 
